@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Joyeux anniversaire, Maman</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f1e6d8;
+    --ink: #24303f;
+    --blue: #3a2a1e;
+    --red: #c9531a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh;
+    font-family: "Jost", system-ui, sans-serif; color: var(--ink);
+    background: radial-gradient(1200px 600px at 20% 0%, #fbf5ec 0%, transparent 60%), var(--bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 28px; padding: 32px 16px 48px;
+  }
+
+  .postcard {
+    width: min(960px, 100%);
+    animation: arrive 1.4s cubic-bezier(.2,.7,.2,1) both;
+  }
+  @keyframes arrive {
+    from { opacity: 0; transform: perspective(1200px) rotateX(10deg) translateY(20px); }
+    to   { opacity: 1; transform: perspective(1200px) rotateX(0) translateY(0); }
+  }
+  .postcard img {
+    display: block; width: 100%; height: auto; border-radius: 6px;
+    box-shadow: 0 1px 2px rgba(36,48,63,.18), 0 22px 44px -14px rgba(36,48,63,.4);
+  }
+
+  /* Shown only if postcard.png is missing, so you can preview a file locally */
+  .placeholder {
+    display: none; width: 100%; aspect-ratio: 3 / 2; border: 2px dashed var(--blue);
+    border-radius: 8px; background: rgba(255,255,255,.55);
+    flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    text-align: center; padding: 20px;
+  }
+  .placeholder.show { display: flex; }
+  .placeholder p { margin: 0; max-width: 34ch; line-height: 1.5; }
+  .placeholder label {
+    cursor: pointer; color: var(--blue); border: 1.5px solid var(--blue);
+    border-radius: 999px; padding: 9px 22px;
+  }
+  .placeholder input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .placeholder label:focus-within { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  .btn {
+    font-family: inherit; font-weight: 500; font-size: 1.1rem; text-decoration: none;
+    color: #fff; background: var(--red); padding: 15px 38px; border-radius: 999px;
+    box-shadow: 0 8px 18px -8px rgba(201,83,26,.7);
+    transition: transform .2s, background .2s;
+    animation: arrive 1.2s .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .btn:hover { background: #a94412; transform: translateY(-2px); }
+  .btn:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .postcard, .btn { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<main class="postcard">
+  <img id="cardImg" alt="Carte d’anniversaire : Joyeux anniversaire à notre maman chérie">
+  <div class="placeholder" id="placeholder">
+    <p>Add your PNG next to this file and name it <b>postcard.png</b>. To preview a file right now, choose it here.</p>
+    <label>Choose PNG <input type="file" id="picker" accept="image/png,image/jpeg,image/webp"></label>
+  </div>
+</main>
+
+<a class="btn" id="watchBtn" href="#" target="_blank" rel="noopener noreferrer">Regarder la vidéo</a>
+
+<script>
+/* =========================================================
+   EDIT THESE TWO LINES
+   ========================================================= */
+const IMAGE_FILE = "postcard.png";                              // your postcard image, same folder as this file
+const VIDEO_URL  = "Video.mp4"; // your video link
+/* ========================================================= */
+
+const img = document.getElementById("cardImg");
+const placeholder = document.getElementById("placeholder");
+const picker = document.getElementById("picker");
+const btn = document.getElementById("watchBtn");
+
+btn.href = VIDEO_URL;
+
+img.addEventListener("error", () => {
+  img.style.display = "none";
+  placeholder.classList.add("show");
+});
+img.src = IMAGE_FILE;
+
+picker.addEventListener("change", () => {
+  const f = picker.files[0];
+  if (!f) return;
+  img.style.display = "block";
+  placeholder.classList.remove("show");
+  img.src = URL.createObjectURL(f);
+});
+</script>
+</body>
+</html>
